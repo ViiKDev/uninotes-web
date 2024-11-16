@@ -1,0 +1,19 @@
+<div class="login-container">
+    <div class="login-left">
+        <h2>Entrar</h2>
+        <p>Entre com sua conta no UniNotes ou se registre agora!</p>
+        <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
+            <label for="username">Usuario</label>
+            <input type="username" formControlName="username" placeholder="Usuario">
+            <label for="password">Senha</label>
+            <div class="password-input-box">
+                <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="********">
+                <button type="button" (click)="showPasswordClick($event)" class="show-passwordHash"><i
+                        [class]="showPassword ? 'eye-icon-dash' : 'eye-icon'"></i></button>
+            </div>
+            <button type="submit" [disabled]="!loginForm.valid">Entrar</button>
+        </form>
+        <p>Nao tem uma conta? <a routerLink="/register">Cadastre aqui!</a></p>
+    </div>
+    <div class="login-right"></div>
+</div>
