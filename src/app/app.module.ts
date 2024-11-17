@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component'
 import { ReactiveFormsModule } from '@angular/forms';
+import { WorkspaceComponent } from './components/workspace/workspace.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    WorkspaceComponent
   ],
   imports: [
     BrowserModule,

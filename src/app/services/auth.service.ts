@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl: string = 'http://localhost:5023/api/users'
+  private baseUrl: string = 'http://localhost:5023/api/users';
 
   constructor(private http: HttpClient) { }
 
@@ -14,5 +14,17 @@ export class AuthService {
   }
   register(userObj: any) {
     return this.http.post<any>(`${this.baseUrl}/register`, userObj);
+  }
+  logout(): void {
+    localStorage.removeItem('token');
+  }
+  storeToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+  getToken() {
+    return localStorage.getItem('token')
+  }
+  isLoggedIn() {
+    return !!this.getToken();
   }
 }
