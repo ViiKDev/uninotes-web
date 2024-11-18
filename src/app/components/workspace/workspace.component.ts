@@ -8,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class WorkspaceComponent implements OnInit {
 
   ngOnInit(): void {
-    //A gente recarrega enquanto isso
-    window.location.reload();
+    //recarrega a pagina
+    if (!localStorage.getItem('workspaceLoaded')) {
+      localStorage.setItem('workspaceLoaded', 'true');
+      window.location.reload();
+    }
   }
 
 }
