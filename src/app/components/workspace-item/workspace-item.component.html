@@ -1,0 +1,20 @@
+<div class="grid-item">
+    <div class="item-wrapper">
+        <div class="item-icon">
+            <i class="fa" [class]="icon"></i>
+        </div>
+        <div class="item-name" (click)="onClickOpenDocument()">
+            <span>{{item.name}}</span>
+        </div>
+        <div class="item-options">
+            <button (click)="onClickToggleMenu()">
+                <span>•••</span>
+            </button>
+        </div>
+        <div class="options-menu" *ngIf="optionsMenuActive">
+            <ul>
+                <li (click)="onClickDelete()">Deletar</li>
+            </ul>
+        </div>
+    </div>
+</div>

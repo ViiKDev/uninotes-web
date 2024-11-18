@@ -9,6 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
+import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { WorkspaceComponent } from './components/workspace/workspace.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    WorkspaceComponent
+    WorkspaceComponent,
+    WorkspaceItemComponent,
+    DocumentEditorComponent
   ],
   imports: [
     BrowserModule,

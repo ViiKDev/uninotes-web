@@ -28,6 +28,7 @@ export class LoginComponent {
           this.auth.storeToken(res.token);
           this.loginForm.reset();
           this.router.navigate(['workspace']);
+          localStorage.setItem('userId', res.id);
         },
         error: (err: any) => { console.error(err.error.message) }
       }

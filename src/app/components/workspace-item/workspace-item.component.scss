@@ -1,0 +1,92 @@
+.grid-item {
+    width: 100%;
+    padding: 5px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .item-wrapper {
+        width: 100%;
+        max-width: 250px;
+        background: whitesmoke;
+        height: 40px;
+        border-radius: 5px;
+        display: flex;
+        box-shadow: var(--box-shadow);
+        position: relative;
+
+        .item-icon {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item-name {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .item-options {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            button {
+                height: 25px;
+                width: 40px;
+                border-radius: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+
+                span {
+                    font-size: 15px;
+                    letter-spacing: 2px;
+                    user-select: none;
+                }
+            }
+        }
+
+        .options-menu {
+            display: flex;
+            position: absolute;
+            width: 100px;
+            background: blue;
+            z-index: 1;
+            left: calc(100%);
+            background: whitesmoke;
+            border-radius: 5px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            padding: 5px;
+
+            ul {
+                list-style: none;
+                display: flex;
+                width: 100%;
+
+                li {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    cursor: pointer;
+                    transition: all .3s;
+                    border-radius: 3px;
+                    padding: 5px 0;
+
+                    &:hover {
+                        background: lightgray;
+                    }
+                }
+            }
+        }
+    }
+}

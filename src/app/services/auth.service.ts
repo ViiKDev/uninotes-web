@@ -17,6 +17,7 @@ export class AuthService {
   }
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId')
   }
   storeToken(token: string) {
     localStorage.setItem('token', token);
@@ -26,5 +27,8 @@ export class AuthService {
   }
   isLoggedIn() {
     return !!this.getToken();
+  }
+  getUserId() {
+    return localStorage.getItem('userId')
   }
 }
