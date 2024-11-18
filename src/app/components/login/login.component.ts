@@ -10,10 +10,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
   loginForm!: FormGroup;
-
-  showPassword: Boolean = false;
+  showPassword: boolean = false;
 
   constructor(private auth: AuthService, private fb: FormBuilder, private router: Router) { }
+
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -22,14 +22,21 @@ export class LoginComponent {
   }
 
   onClickLogin(): void {
+    if (this.loginForm.invalid) {
+      console.error('Formulário inválido');
+      return; 
+    }
+
     this.auth.login(this.loginForm.value).subscribe(
       {
-        next: (res: any) => {
-          this.auth.storeToken(res.token);
+        next: (res) => {
+          this.auth.storeToken(res.token); 
           this.loginForm.reset();
           this.router.navigate(['workspace']);
         },
-        error: (err: any) => { console.error(err.error.message) }
+        error: (err) => {
+          console.error('Erro ao fazer login', err.error.message); 
+        }
       }
     );
   }
