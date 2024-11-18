@@ -53,25 +53,25 @@ section {
 }
 
 .cta-button {
-    display: inline-block;
-    padding: 15px 40px;
-    background-color: #2b6cb0;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 20px; /* Adiciona espaçamento superior */
-  }
-  
-  .cta-button:hover {
-    background-color: #1e4a7a;
-    transform: translateY(-3px);
-  }
+  display: inline-block;
+  padding: 15px 40px;
+  background-color: #2b6cb0;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 20px;
+}
+
+.cta-button:hover {
+  background-color: #1e4a7a;
+  transform: translateY(-3px);
+}
 
 .image-section {
   flex: 1;
-  display: flex;
+  display: block;
   justify-content: center;
 }
 
@@ -160,4 +160,59 @@ section {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 15px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .text-section h1 {
+    font-size: 2rem;
+  }
+
+  .text-section p {
+    font-size: 1rem;
+  }
+
+  .cta-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .image-section {
+    margin-top: 20px;
+    display: none;
+  }
+
+  .about-body h2,
+  .about-project-container h2 {
+    font-size: 2rem;
+  }
+
+  .team-member {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .text-section p {
+    font-size: 0.9rem;
+  }
+
+  .cta-button {
+    font-size: 0.9rem;
+    padding: 10px 25px;
+  }
+
+  .team-member {
+    padding: 15px;
+  }
 }
