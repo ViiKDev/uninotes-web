@@ -1,0 +1,32 @@
+<ng-container *ngIf="!loggedInNavbar">
+    <nav>
+        <div class="nav-section">
+            <div class="logo" routerLink="home">
+                <span>Uni<span class="blue">Notes</span></span>
+            </div>
+        </div>
+        <div class="nav-section">
+            <ul>
+                <li routerLink="/home">Inicio</li>
+                <li routerLink="/home">Sobre</li>
+                <li routerLink="/home">Contato</li>
+            </ul>
+        </div>
+        <div class="nav-section buttons-wrapper">
+            <button class="fill-anim" routerLink="/login"><span>Entrar</span></button>
+            <button class="fill-anim" routerLink="/register"><span>Registrar</span></button>
+        </div>
+    </nav>
+</ng-container>
+<ng-container *ngIf="loggedInNavbar">
+    <nav>
+        <div class="nav-section">
+            <div class="logo" routerLink="home">
+                <span>Uni<span class="blue">Notes</span></span>
+            </div>
+        </div>
+        <div class="nav-section buttons-wrapper">
+            <button class="fill-anim" (click)="onClickSair()"><span>Sair</span></button>
+        </div>
+    </nav>
+</ng-container>

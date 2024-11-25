@@ -1,0 +1,154 @@
+:root {
+    --blue-100: #a0e6ff;
+    --blue-200: #85ceec;
+    --blue-300: #6ab5d9;
+    --blue-400: #4e9dc6;
+    --blue-500: #3384b3;
+    --blue-600: #2b719a;
+    --blue-700: #2c5282;
+    --box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+
+.fill-anim {
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        span {
+            position: relative;
+        }
+
+        &:before {
+            position: absolute;
+            display: block;
+            content: "";
+            width: 0%;
+            height: 100%;
+            background: var(--blue-500);
+            top: 0;
+            left: 0;
+            animation-name: fill;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+i {
+
+    &.eye-icon,
+    &.eye-icon-dash {
+        width: 13px;
+        height: 13px;
+        border: 1px solid black;
+        border-radius: 75% 15%;
+        position: relative;
+        transform: rotate(45deg);
+        display: block;
+
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border: 1px solid black;
+            border-radius: 50%;
+            left: 2px;
+            top: 2px;
+        }
+    }
+
+    &.eye-icon-dash:after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 0;
+        border-bottom: 1px solid black;
+        background: white;
+        padding: 1px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        animation-name: eye-dash;
+        animation-duration: .2s;
+        animation-fill-mode: forwards;
+    }
+
+    &.loading-icon {
+        height: 100%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 2px solid black;
+        border-top-color: black !important;
+        animation-name: spinner;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+    }
+}
+
+
+@keyframes eye-dash {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 150%;
+    }
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes fill {
+    0% {
+        width: 0%;
+    }
+
+    80% {
+        width: 100%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes up-n-down {
+    0% {
+        top: 0
+    }
+
+    25% {
+        top: 1px
+    }
+
+    75% {
+        top: -1px
+    }
+
+    100% {
+        top: 0
+    }
+}
