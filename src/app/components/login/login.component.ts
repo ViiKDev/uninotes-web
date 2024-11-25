@@ -33,6 +33,7 @@ export class LoginComponent {
           this.auth.storeToken(res.token); 
           this.loginForm.reset();
           this.router.navigate(['workspace']);
+          localStorage.setItem('userId', res.id);
         },
         error: (err) => {
           console.error('Erro ao fazer login', err.error.message); 

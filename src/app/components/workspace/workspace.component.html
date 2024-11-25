@@ -1,1 +1,19 @@
-<p>workspace works!</p>
+<div class="workspace">
+    <div class="toolbar">
+        <h3>Meu Workspace</h3>
+        <div class="buttons-wrapper">
+            <button class="fill-anim" (click)="onClickCreateNewFolder()"><span>Nova Pasta</span></button>
+            <button class="fill-anim" (click)="onClickCreateNewDocument()"><span>Novo Documento</span></button>
+        </div>
+    </div>
+    <div class="grid-wrapper">
+        <div class="items-grid">
+            <!-- FoldersList -->
+            <app-workspace-item *ngFor="let i of foldersList" [item]="i" icon="fa-folder"
+                (deleteEmitter)="onDelete($event)"></app-workspace-item>
+            <!-- DocumentsList -->
+            <app-workspace-item *ngFor="let i of documentsList" [item]="i" icon="fa-file"
+                (deleteEmitter)="onDelete($event)"></app-workspace-item>
+        </div>
+    </div>
+</div>

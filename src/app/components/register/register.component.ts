@@ -23,7 +23,7 @@ export class RegisterComponent {
   onClickRegister(): void {
     this.auth.register(this.registerForm.value).subscribe(
       {
-        next: (res: any) => { console.log(res) },
+        next: (res: any) => { this.registerForm.reset(); alert("Usuario registrado! Por favor faca o login") },
         error: (err: any) => { console.error(err.error.message) }
       }
     );

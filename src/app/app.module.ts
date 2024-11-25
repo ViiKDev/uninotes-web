@@ -10,6 +10,8 @@ import { RegisterComponent } from './components/register/register.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
+import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { FooterComponent } from './components/footer/footer.component';
     RegisterComponent,
     WorkspaceComponent,
     FooterComponent
+    WorkspaceItemComponent,
+    DocumentEditorComponent
   ],
   imports: [
     BrowserModule,
