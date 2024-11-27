@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
-  documentsList: any[] = []; // Certifique-se de que os serviços retornem um array
+  documentsList: any[] = []; 
   foldersList: any[] = [];
   searchQuery: string = '';
   isGridView: boolean = true;
@@ -31,7 +31,7 @@ export class WorkspaceComponent implements OnInit {
     this.documentService.getAllDocuments().subscribe({
       next: (documents) => {
         if (Array.isArray(documents)) {
-          this.documentsList = documents; // Garantindo que seja array
+          this.documentsList = documents; 
         } else {
           console.error('Dados de documentos não são um array:', documents);
         }
@@ -42,7 +42,7 @@ export class WorkspaceComponent implements OnInit {
     this.folderService.getAllFolders().subscribe({
       next: (folders) => {
         if (Array.isArray(folders)) {
-          this.foldersList = folders; // Garantindo que seja array
+          this.foldersList = folders; 
         } else {
           console.error('Dados de pastas não são um array:', folders);
         }

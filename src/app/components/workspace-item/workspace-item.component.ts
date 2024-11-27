@@ -1,4 +1,3 @@
-// workspace-item.component.ts
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/document.service';
