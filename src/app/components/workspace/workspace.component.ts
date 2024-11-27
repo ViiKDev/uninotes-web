@@ -22,9 +22,15 @@ export class WorkspaceComponent implements OnInit {
       error: (err) => { console.log(err.error) }
     });
   }
-  onClickCreateNewFolder() {
+  onClickCreateNewFolder() { 
+    const folderName = prompt("Digite o nome da nova pasta: ");
+    if(!folderName){
+      console.error("Nome da pasta é obrigatório!");
+      return;
+    }
+
     let folder = {
-      name: "Nova Pasta",
+      name: folderName,
       documents: []
     }
     this.folderService.createFolder(folder).subscribe({
@@ -35,8 +41,14 @@ export class WorkspaceComponent implements OnInit {
     });
   }
   onClickCreateNewDocument() {
+    const documentName = prompt("Digite o nome do documento: ");
+    if(!documentName){
+      console.error("Nome do documento é obrigatório!");
+      return;
+    }
+
     let document = {
-      name: "Novo Documento",
+      name: documentName,
       content: "",
       folderId: null
     }
