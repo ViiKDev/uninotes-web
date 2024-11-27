@@ -1,60 +1,52 @@
 <div class="document-editor" *ngIf="!isLoading">
-    <div class="toolbar">
-      <div class="toolbar-section left">
-        <!-- Nome do documento exibido ou campo de edição -->
-        <span *ngIf="!isEditingTitle" class="document-name">{{ document.name }}</span>
-        <input 
-          *ngIf="isEditingTitle" 
-          #titleInput 
-          class="document-name-edit" 
-          type="text" 
-          [value]="document.name" 
-          (blur)="saveDocumentName()" 
-          (keyup.enter)="saveDocumentName()" 
-          placeholder="Edit document name..."/>
-  
-        <!-- Ícone de lápis para iniciar a edição -->
-        <span *ngIf="!isEditingTitle" (click)="startTitleEdit()" class="edit-icon">
-          <i class="fas fa-pencil-alt"></i>
-        </span>
-      </div>
-  
-      <div class="toolbar-section center">
-        <button class="toolbar-btn" [class.active]="isEditMode" (click)="toggleEditMode()">
-          <i class="fas fa-edit"></i>
-          Edit
-        </button>
-        <button class="toolbar-btn" [class.active]="!isEditMode" (click)="toggleEditMode()">
-          <i class="fas fa-eye"></i>
-          Preview
-        </button>
-      </div>
-      <div class="toolbar-section right">
-        <button class="toolbar-btn help-btn" title="Markdown Help">
-          <i class="fas fa-question-circle"></i>
-        </button>
-      </div>
+  <div class="toolbar">
+    <div class="toolbar-section left">
+      <span *ngIf="!isEditingTitle" class="document-name">{{ document.name }}</span>
+      <input
+        *ngIf="isEditingTitle"
+        #titleInput
+        class="document-name-edit"
+        type="text"
+        [value]="document.name"
+        (blur)="saveDocumentName()"
+        (keyup.enter)="saveDocumentName()"
+        placeholder="Edit document name..."/>
+
+      <span *ngIf="!isEditingTitle" (click)="startTitleEdit()" class="edit-icon">
+        <i class="fas fa-pencil-alt"></i>
+      </span>
     </div>
-  
-    <div class="editor-container">
-      <div class="paper" [class.preview-mode]="!isEditMode">
-        <ng-container *ngIf="isEditMode">
-          <textarea 
-            class="markdown-editor"
-            [value]="document.content"
-            (input)="onContentChange($event)"
-            placeholder="Escreva aqui..."></textarea>
-        </ng-container>
-  
-        <ng-container *ngIf="!isEditMode">
-          <div class="preview-content" [innerHTML]="renderedContent"></div>
-        </ng-container>
-      </div>
+
+    <div class="toolbar-section center">
+      <button class="toolbar-btn" [class.active]="isEditMode" (click)="toggleEditMode()">
+        <i class="fas fa-edit"></i>
+        Edit
+      </button>
+      <button class="toolbar-btn" [class.active]="!isEditMode" (click)="toggleEditMode()">
+        <i class="fas fa-eye"></i>
+        Preview
+      </button>
+    </div>
+    <div class="toolbar-section right">
+      <button class="toolbar-btn help-btn" title="Markdown Help">
+        <i class="fas fa-question-circle"></i>
+      </button>
     </div>
   </div>
-  
-  <!-- <div class="loading-overlay" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>Loading document...</p>
-  </div> -->
-  
+
+  <div class="editor-container">
+    <div class="paper" [class.preview-mode]="!isEditMode">
+      <ng-container *ngIf="isEditMode">
+        <textarea
+          class="markdown-editor"
+          [value]="document.content"
+          (input)="onContentChange($event)"
+          placeholder="Escreva aqui..."></textarea>
+      </ng-container>
+
+      <ng-container *ngIf="!isEditMode">
+        <div class="preview-content" [innerHTML]="renderedContent"></div>
+      </ng-container>
+    </div>
+  </div>
+</div>

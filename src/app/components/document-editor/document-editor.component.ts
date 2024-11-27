@@ -17,24 +17,29 @@ export class DocumentEditorComponent implements OnInit {
   isLoading: boolean = true;
   isEditMode: boolean = true;
   renderedContent: string = '';
-  isEditingTitle: boolean = false;  // Variável para controlar o modo de edição do título
-  
+  isEditingTitle: boolean = false;
+
   @ViewChild('titleInput') titleInput!: ElementRef;
-  
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router, 
+    private router: Router,
     private documentService: DocumentService
   ) {
-    // Configure autosave com debounce
     this.saveSubject.pipe(
-      debounceTime(1000) // Espera 1 segundo após a última mudança
+      debounceTime(1000)
     ).subscribe(content => {
       this.saveDocument(content);
     });
   }
 
   ngOnInit() {
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+      pedantic: false
+    });
+
     this.route.queryParams.subscribe((params: any) => {
       if (params.id) {
         this.documentService.getDocumentById(params.id).subscribe({
@@ -44,7 +49,7 @@ export class DocumentEditorComponent implements OnInit {
             this.isLoading = false;
           },
           error: (err) => {
-            console.error('Error loading document:', err);
+            console.error('Erro ao carregar o documento:', err);
             this.isLoading = false;
           }
         });
@@ -68,13 +73,22 @@ export class DocumentEditorComponent implements OnInit {
     }
   }
 
-  async updatePreview() {
+  updatePreview() {
     if (this.document && this.document.content) {
       try {
-        this.renderedContent = await marked(this.document.content);
+        const html = marked.parse(this.document.content, {
+          breaks: true,
+          gfm: true,
+          pedantic: false
+        }) as string;
+        
+        this.renderedContent = html.replace(
+          /<hr>/g, 
+          '<hr style="margin: 2rem 0; border: 0; border-top: 1px solid #eee;">'
+        );
       } catch (error) {
-        console.error('Error rendering markdown:', error);
-        this.renderedContent = 'Error rendering content';
+        console.error('Erro ao renderizar o MK:', error);
+        this.renderedContent = 'Erro ao renderizar o conteudo';
       }
     }
   }
@@ -84,42 +98,39 @@ export class DocumentEditorComponent implements OnInit {
       this.document.content = content;
       this.documentService.updateDocument(this.document.id, this.document).subscribe({
         next: () => {
-          console.log('Document saved successfully!');
+          console.log('Documento Salvo!');
         },
         error: (err) => {
-          console.error('Error saving document:', err);
+          console.error('Erro ao Salvar:', err);
         }
       });
     }
   }
 
-  // Função para iniciar a edição do título
   startTitleEdit() {
     this.isEditingTitle = true;
     setTimeout(() => {
       if (this.titleInput) {
-        this.titleInput.nativeElement.focus();  // Foca no campo de texto ao começar a edição
+        this.titleInput.nativeElement.focus();
       }
     }, 0);
   }
 
-  // Função para salvar o nome do documento após a edição
   saveDocumentName() {
     if (this.document && this.titleInput) {
       const newName = this.titleInput.nativeElement.value.trim();
       if (newName && newName !== this.document.name) {
-        this.document.name = newName;  // Atualiza o nome do documento
-        // Aqui, você pode adicionar uma chamada ao backend para atualizar o nome do documento
+        this.document.name = newName;
         this.documentService.updateDocument(this.document.id, this.document).subscribe({
           next: () => {
-            console.log('Document name saved successfully!');
+            console.log('Documento Salvo!');
           },
           error: (err) => {
-            console.error('Error saving document name:', err);
+            console.error('Erro ao salvar:', err);
           }
         });
       }
-      this.isEditingTitle = false;  // Sai do modo de edição
+      this.isEditingTitle = false;
     }
   }
 
