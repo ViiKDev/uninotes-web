@@ -12,6 +12,7 @@ import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
 import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { FormsModule } from '@angular/forms';  // Importe FormsModule
 
 @NgModule({
   declarations: [
