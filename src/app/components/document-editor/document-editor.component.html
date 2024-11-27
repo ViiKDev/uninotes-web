@@ -10,7 +10,7 @@
         [value]="document.name"
         (blur)="saveDocumentName()"
         (keyup.enter)="saveDocumentName()"
-        placeholder="Edit document name..."/>
+        placeholder="Editar nome do documento..."/>
 
       <span *ngIf="!isEditingTitle" (click)="startTitleEdit()" class="edit-icon">
         <i class="fas fa-pencil-alt"></i>
