@@ -15,7 +15,7 @@ export class DocumentEditorComponent implements OnInit {
   document: any = null;
   private saveSubject = new Subject<string>();
   isLoading: boolean = true;
-  isEditMode: boolean = true;
+  isEditMode: boolean = true; 
   renderedContent: string = '';
   isEditingTitle: boolean = false;
 
@@ -45,6 +45,9 @@ export class DocumentEditorComponent implements OnInit {
         this.documentService.getDocumentById(params.id).subscribe({
           next: (res) => {
             this.document = res;
+            if (this.document.content && this.document.content.trim() !== '') {
+              this.isEditMode = false;
+            }
             this.updatePreview();
             this.isLoading = false;
           },

@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
-  documentsList: any[] = []; 
+  documentsList: any[] = [];
   foldersList: any[] = [];
   searchQuery: string = '';
   isGridView: boolean = true;
@@ -28,26 +28,21 @@ export class WorkspaceComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.documentService.getAllDocuments().subscribe({
-      next: (documents) => {
-        if (Array.isArray(documents)) {
-          this.documentsList = documents; 
-        } else {
-          console.error('Dados de documentos não são um array:', documents);
+    Promise.all([
+      this.documentService.getAllDocuments().toPromise(),
+      this.folderService.getAllFolders().toPromise()
+    ]).then(([documents, folders]) => {
+      if (Array.isArray(documents)) {
+        this.documentsList = documents;
+      }
+      if (Array.isArray(folders)) {
+        this.foldersList = folders;
+        if (this.activeFolder) {
+          this.activeFolder = folders.find(f => f.id === this.activeFolder.id) || null;
         }
-      },
-      error: (err) => console.error('Erro ao carregar documentos:', err),
-    });
-  
-    this.folderService.getAllFolders().subscribe({
-      next: (folders) => {
-        if (Array.isArray(folders)) {
-          this.foldersList = folders; 
-        } else {
-          console.error('Dados de pastas não são um array:', folders);
-        }
-      },
-      error: (err) => console.error('Erro ao carregar pastas:', err),
+      }
+    }).catch(err => {
+      console.error('Erro ao carregar dados:', err);
     });
   }
 
@@ -64,8 +59,12 @@ export class WorkspaceComponent implements OnInit {
     this.folderService.createFolder(newFolder).subscribe({
       next: (folder: any) => {
         this.foldersList = [...this.foldersList, folder];
+        this.loadData();
       },
-      error: (err) => alert(`Erro ao criar pasta: ${err.error.message}`),
+      error: (err) => {
+        alert(`Erro ao criar pasta: ${err.error?.message || 'Erro desconhecido'}`);
+        console.error('Erro ao criar pasta:', err);
+      },
     });
   }
 
@@ -83,20 +82,70 @@ export class WorkspaceComponent implements OnInit {
     this.documentService.createDocument(newDocument).subscribe({
       next: (doc: any) => {
         this.documentsList = [...this.documentsList, doc];
+        
+        if (this.activeFolder) {
+          const updatedFolder = { 
+            ...this.activeFolder,
+            documents: [...(this.activeFolder.documents || []), doc]
+          };
+          this.activeFolder = updatedFolder;
+          
+          this.foldersList = this.foldersList.map(folder => 
+            folder.id === updatedFolder.id ? updatedFolder : folder
+          );
+        }
+        
+        this.loadData();
+        
         this.router.navigate(['document-editor'], { queryParams: { id: doc.id } });
       },
-      error: (err) => alert(`Erro ao criar documento: ${err.error.message}`),
+      error: (err) => {
+        alert(`Erro ao criar documento: ${err.error?.message || 'Erro desconhecido'}`);
+        console.error('Erro ao criar documento:', err);
+      },
     });
   }
 
   onDelete(event: { type: 'folder' | 'file'; item: any }): void {
     if (event.type === 'folder') {
-      this.foldersList = this.foldersList.filter(f => f.id !== event.item.id);
-      if (this.activeFolder?.id === event.item.id) {
-        this.activeFolder = null;
+      if (!confirm(`Tem certeza que deseja excluir a pasta "${event.item.name}"?`)) {
+        return;
       }
+
+      this.folderService.deleteFolder(event.item.id).subscribe({
+        next: () => {
+          this.foldersList = this.foldersList.filter(f => f.id !== event.item.id);
+          if (this.activeFolder?.id === event.item.id) {
+            this.activeFolder = null;
+          }
+          this.loadData(); 
+        },
+        error: (err) => {
+          alert(`Erro ao excluir pasta: ${err.error?.message || 'Erro desconhecido'}`);
+          console.error('Erro ao excluir pasta:', err);
+        }
+      });
     } else if (event.type === 'file') {
-      this.documentsList = this.documentsList.filter(d => d.id !== event.item.id);
+      if (!confirm(`Tem certeza que deseja excluir o documento "${event.item.name}"?`)) {
+        return;
+      }
+
+      this.documentService.deleteDocument(event.item.id).subscribe({
+        next: () => {
+          this.documentsList = this.documentsList.filter(d => d.id !== event.item.id);
+          if (this.activeFolder) {
+            this.activeFolder = {
+              ...this.activeFolder,
+              documents: (this.activeFolder.documents || []).filter((d: { id: any; }) => d.id !== event.item.id)
+            };
+          }
+          this.loadData(); 
+        },
+        error: (err) => {
+          alert(`Erro ao excluir documento: ${err.error?.message || 'Erro desconhecido'}`);
+          console.error('Erro ao excluir documento:', err);
+        }
+      });
     }
   }
 
@@ -106,6 +155,7 @@ export class WorkspaceComponent implements OnInit {
 
   setActiveFolder(folder: any): void {
     this.activeFolder = folder;
+    this.loadData();
   }
 
   getFilteredFolders(): any[] {

@@ -1,65 +1,99 @@
-
 <div class="workspace">
-    <header class="workspace-header">
-        <div class="header-content">
-            <h1>Meu Workspace</h1>
-
-            <div class="header-actions">
-                <div class="search-bar">
-                    <input type="text" placeholder="Pesquisar..." [(ngModel)]="searchQuery">
-                </div>
-
-                <button class="create-btn" (click)="onClickCreateNewDocument()">
-                    <i class="fas fa-file"></i> Novo Documento
-                </button>
-
-                <button class="create-btn" (click)="onClickCreateNewFolder()">
-                    <i class="fas fa-folder"></i> Nova Pasta
-                </button>
-            </div>
+    <div class="workspace-header">
+      <div class="header-content">
+        <h1>Meu Workspace</h1>
+        
+        <div class="header-actions">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input 
+              type="text" 
+              [(ngModel)]="searchQuery" 
+              placeholder="Buscar..."
+            >
+          </div>
+  
+          <button 
+            class="create-btn" 
+            (click)="onClickCreateNewDocument()"
+          >
+            <i class="fas fa-plus"></i>
+            Novo Documento
+          </button>
+  
+          <button 
+            class="create-btn" 
+            (click)="onClickCreateNewFolder()"
+          >
+            <i class="fas fa-folder-plus"></i>
+            Nova Pasta
+          </button>
+  
+          <button 
+            class="view-toggle" 
+            (click)="toggleView()"
+          >
+            <i [class]="isGridView ? 'fas fa-list' : 'fas fa-th'"></i>
+          </button>
         </div>
-    </header>
-
-    <div class="workspace-content">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Pastas</h2>
-            </div>
-
-            <div class="folders-list">
-                <div class="folder-item" [class.active]="!activeFolder" (click)="setActiveFolder(null)">
-                    <i class="fas fa-folder"></i> Principal
-                </div>
-
-                <div class="folder-item" 
-                     *ngFor="let folder of getFilteredFolders(); trackBy: trackById" 
-                     [class.active]="activeFolder?.id === folder.id" 
-                     (click)="setActiveFolder(folder)">
-                    <app-workspace-item 
-                        [item]="folder" 
-                        icon="fa-folder" 
-                        (deleteEmitter)="onDelete($event)">
-                    </app-workspace-item>
-                </div>
-            </div>
-        </aside>
-
-        <main class="content-area">
-            <div class="content-header">
-                <h2>{{activeFolder?.name || 'Todos os Documentos'}}</h2>
-            </div>
-
-            <div class="documents-grid" [class.list-view]="!isGridView">
-                <div class="document-card" 
-                     *ngFor="let doc of getFilteredDocuments(); trackBy: trackById" 
-                     (click)="openDocument(doc)">
-                    <app-workspace-item 
-                        [item]="doc" 
-                        icon="fa-file" 
-                        (deleteEmitter)="onDelete($event)">
-                    </app-workspace-item>
-                </div>
-            </div>
-        </main>
+      </div>
     </div>
-</div>
+  
+    <div class="workspace-content">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>Pastas</h2>
+        </div>
+  
+        <div class="folders-list">
+          <div 
+            class="folder-item" 
+            [class.active]="!activeFolder" 
+            (click)="setActiveFolder(null)"
+          >
+            <i class="fas fa-folder"></i>
+            Principal
+          </div>
+  
+          <div 
+            class="folder-item" 
+            *ngFor="let folder of getFilteredFolders(); trackBy: trackById" 
+            [class.active]="activeFolder?.id === folder.id" 
+            (click)="setActiveFolder(folder)"
+          >
+            <i class="fas fa-folder"></i>
+            {{folder.name}}
+            <button 
+              class="delete-btn" 
+              (click)="onDelete({type: 'folder', item: folder}); $event.stopPropagation()"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="content-area" role="main">
+        <div class="content-header">
+          <h2>{{activeFolder?.name || 'Todos os Documentos'}}</h2>
+        </div>
+  
+        <div class="documents-grid" [class.list-view]="!isGridView">
+          <div 
+            class="document-card" 
+            *ngFor="let doc of getFilteredDocuments(); trackBy: trackById" 
+            (click)="openDocument(doc)"
+          >
+            <i class="fas fa-file-alt"></i>
+            <span class="doc-name">{{doc.name}}</span>
+            <button 
+              class="delete-btn" 
+              (click)="onDelete({type: 'file', item: doc}); $event.stopPropagation()"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
