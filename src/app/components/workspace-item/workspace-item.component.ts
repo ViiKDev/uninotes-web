@@ -14,30 +14,45 @@ export class WorkspaceItemComponent {
   @Output() deleteEmitter: EventEmitter<any> = new EventEmitter();
 
   optionsMenuActive: boolean = false;
-  constructor(private folderService: FolderService, private documentService: DocumentService, private router: Router) { }
 
-  onClickToggleMenu() {
+  constructor(
+    private folderService: FolderService,
+    private documentService: DocumentService,
+    private router: Router
+  ) { }
+
+  onClickToggleMenu(event: Event): void {
+    event.stopPropagation();
     this.optionsMenuActive = !this.optionsMenuActive;
   }
-  onClickDelete() {
-    if (this.icon == "fa-folder") {
+
+  onClickDelete(event: Event): void {
+    event.stopPropagation();
+    const confirmDelete = confirm('Tem certeza que deseja deletar este item?');
+    if (!confirmDelete) return;
+
+    if (this.icon === "fa-folder") {
       this.folderService.deleteFolder(this.item.id).subscribe({
         next: () => {
-          this.deleteEmitter.emit({ type: 'folder', item: this.item })
-        }
+          this.deleteEmitter.emit({ type: 'folder', item: this.item });
+        },
+        error: (err) => console.error('Erro ao deletar pasta:', err)
       });
-    } else if (this.icon == "fa-file") {
+    } else if (this.icon === "fa-file") {
       this.documentService.deleteDocument(this.item.id).subscribe({
         next: () => {
-          this.deleteEmitter.emit({ type: 'file', item: this.item })
-        }
+          this.deleteEmitter.emit({ type: 'file', item: this.item });
+        },
+        error: (err) => console.error('Erro ao deletar documento:', err)
       });
     }
-    this.onClickToggleMenu();
+    this.optionsMenuActive = false;
   }
-  onClickOpenDocument() {
-    if (this.icon == "fa-file") {
-      this.router.navigate([`document-editor`], { queryParams: { id: this.item.id } })
+
+  onClickOpenDocument(event: Event): void {
+    event.stopPropagation();
+    if (this.icon === "fa-file") {
+      this.router.navigate(['document-editor'], { queryParams: { id: this.item.id } });
     }
   }
 }

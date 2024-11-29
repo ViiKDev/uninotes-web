@@ -7,7 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component'
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { WorkspaceItemComponent } from './components/workspace-item/workspace-item.component';
 import { DocumentEditorComponent } from './components/document-editor/document-editor.component';
@@ -30,10 +30,9 @@ import { FooterComponent } from './components/footer/footer.component';
     HttpClientModule,
     routing,
     ReactiveFormsModule,
+    FormsModule
   ],
-
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

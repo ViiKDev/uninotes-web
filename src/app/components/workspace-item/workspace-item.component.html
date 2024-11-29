@@ -1,20 +1,23 @@
 <div class="grid-item">
     <div class="item-wrapper">
         <div class="item-icon">
-            <i class="fa" [class]="icon"></i>
+            <i class="fas {{icon}}"></i>
         </div>
-        <div class="item-name" (click)="onClickOpenDocument()">
-            <span>{{item.name}}</span>
+
+        <div class="item-name" (click)="onClickOpenDocument($event)">
+            {{item.name}}
         </div>
+
         <div class="item-options">
-            <button (click)="onClickToggleMenu()">
+            <button (click)="onClickToggleMenu($event)">
                 <span>•••</span>
             </button>
-        </div>
-        <div class="options-menu" *ngIf="optionsMenuActive">
-            <ul>
-                <li (click)="onClickDelete()">Deletar</li>
-            </ul>
+
+            <div class="options-menu" *ngIf="optionsMenuActive">
+                <ul>
+                    <li (click)="onClickDelete($event)">Deletar</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

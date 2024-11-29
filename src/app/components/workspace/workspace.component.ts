@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { Component, OnInit, TrackByFunction } from '@angular/core';
+import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/document.service';
 import { FolderService } from 'src/app/services/folder.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-workspace',
@@ -9,63 +10,179 @@ import { FolderService } from 'src/app/services/folder.service';
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
-  documentsList: any = [];
-  foldersList: any = [];
-  constructor(private documentService: DocumentService, private folderService: FolderService, private auth: AuthService) { }
+  documentsList: any[] = [];
+  foldersList: any[] = [];
+  searchQuery: string = '';
+  isGridView: boolean = true;
+  activeFolder: any = null;
+
+  constructor(
+    private documentService: DocumentService,
+    private folderService: FolderService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
-    this.documentService.getAllDocuments().subscribe({
-      next: (res) => { this.documentsList = res },
-      error: (err) => { console.log(err.error) }
-    });
-    this.folderService.getAllFolders().subscribe({
-      next: (res) => { this.foldersList = res },
-      error: (err) => { console.log(err.error) }
+    this.loadData();
+  }
+
+  private loadData(): void {
+    Promise.all([
+      this.documentService.getAllDocuments().toPromise(),
+      this.folderService.getAllFolders().toPromise()
+    ]).then(([documents, folders]) => {
+      if (Array.isArray(documents)) {
+        this.documentsList = documents;
+      }
+      if (Array.isArray(folders)) {
+        this.foldersList = folders;
+        if (this.activeFolder) {
+          this.activeFolder = folders.find(f => f.id === this.activeFolder.id) || null;
+        }
+      }
+    }).catch(err => {
+      console.error('Erro ao carregar dados:', err);
     });
   }
-  onClickCreateNewFolder() { 
-    const folderName = prompt("Digite o nome da nova pasta: ");
-    if(!folderName){
-      console.error("Nome da pasta é obrigatório!");
-      return;
-    }
 
-    let folder = {
-      name: folderName,
-      documents: []
-    }
-    this.folderService.createFolder(folder).subscribe({
-      next: (res) => {
-        this.foldersList.push(folder);
+  onClickCreateNewFolder(): void {
+    const folderName = prompt('Digite o nome da pasta:');
+    if (!folderName?.trim()) return;
+
+    const newFolder = {
+      name: folderName.trim(),
+      userId: this.authService.getUserId(),
+      documents: [],
+    };
+
+    this.folderService.createFolder(newFolder).subscribe({
+      next: (folder: any) => {
+        this.foldersList = [...this.foldersList, folder];
+        this.loadData();
       },
-      error: (err) => { console.error(err.error) }
-    });
-  }
-  onClickCreateNewDocument() {
-    const documentName = prompt("Digite o nome do documento: ");
-    if(!documentName){
-      console.error("Nome do documento é obrigatório!");
-      return;
-    }
-
-    let document = {
-      name: documentName,
-      content: "",
-      folderId: null
-    }
-    this.documentService.createDocument(document).subscribe({
-      next: (res) => {
-        this.documentsList.push(document);
+      error: (err) => {
+        alert(`Erro ao criar pasta: ${err.error?.message || 'Erro desconhecido'}`);
+        console.error('Erro ao criar pasta:', err);
       },
-      error: (err) => { console.error(err.error) }
     });
   }
 
-  onDelete(event: any) {
-    console.log(event)
-    if (event.type == 'folder') {
-      this.foldersList.splice(this.foldersList.indexOf(event.item), 1)
-    } else if (event.type == 'file') {
-      this.documentsList.splice(this.documentsList.indexOf(event.item), 1)
+  onClickCreateNewDocument(): void {
+    const docName = prompt('Digite o nome do documento:');
+    if (!docName?.trim()) return;
+
+    const newDocument = {
+      name: docName.trim(),
+      content: '',
+      userId: this.authService.getUserId(),
+      folderId: this.activeFolder?.id || null,
+    };
+
+    this.documentService.createDocument(newDocument).subscribe({
+      next: (doc: any) => {
+        this.documentsList = [...this.documentsList, doc];
+        
+        if (this.activeFolder) {
+          const updatedFolder = { 
+            ...this.activeFolder,
+            documents: [...(this.activeFolder.documents || []), doc]
+          };
+          this.activeFolder = updatedFolder;
+          
+          this.foldersList = this.foldersList.map(folder => 
+            folder.id === updatedFolder.id ? updatedFolder : folder
+          );
+        }
+        
+        this.loadData();
+        
+        this.router.navigate(['document-editor'], { queryParams: { id: doc.id } });
+      },
+      error: (err) => {
+        alert(`Erro ao criar documento: ${err.error?.message || 'Erro desconhecido'}`);
+        console.error('Erro ao criar documento:', err);
+      },
+    });
+  }
+
+  onDelete(event: { type: 'folder' | 'file'; item: any }): void {
+    if (event.type === 'folder') {
+      if (!confirm(`Tem certeza que deseja excluir a pasta "${event.item.name}"?`)) {
+        return;
+      }
+
+      this.folderService.deleteFolder(event.item.id).subscribe({
+        next: () => {
+          this.foldersList = this.foldersList.filter(f => f.id !== event.item.id);
+          if (this.activeFolder?.id === event.item.id) {
+            this.activeFolder = null;
+          }
+          this.loadData(); 
+        },
+        error: (err) => {
+          alert(`Erro ao excluir pasta: ${err.error?.message || 'Erro desconhecido'}`);
+          console.error('Erro ao excluir pasta:', err);
+        }
+      });
+    } else if (event.type === 'file') {
+      if (!confirm(`Tem certeza que deseja excluir o documento "${event.item.name}"?`)) {
+        return;
+      }
+
+      this.documentService.deleteDocument(event.item.id).subscribe({
+        next: () => {
+          this.documentsList = this.documentsList.filter(d => d.id !== event.item.id);
+          if (this.activeFolder) {
+            this.activeFolder = {
+              ...this.activeFolder,
+              documents: (this.activeFolder.documents || []).filter((d: { id: any; }) => d.id !== event.item.id)
+            };
+          }
+          this.loadData(); 
+        },
+        error: (err) => {
+          alert(`Erro ao excluir documento: ${err.error?.message || 'Erro desconhecido'}`);
+          console.error('Erro ao excluir documento:', err);
+        }
+      });
     }
+  }
+
+  toggleView(): void {
+    this.isGridView = !this.isGridView;
+  }
+
+  setActiveFolder(folder: any): void {
+    this.activeFolder = folder;
+    this.loadData();
+  }
+
+  getFilteredFolders(): any[] {
+    return this.searchQuery
+      ? this.foldersList.filter(folder =>
+          folder.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      : this.foldersList;
+  }
+
+  getFilteredDocuments(): any[] {
+    let filteredDocs = this.activeFolder
+      ? this.documentsList.filter(doc => doc.folderId === this.activeFolder.id)
+      : this.documentsList;
+
+    return this.searchQuery
+      ? filteredDocs.filter(doc =>
+          doc.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      : filteredDocs;
+  }
+
+  openDocument(doc: any): void {
+    this.router.navigate(['document-editor'], { queryParams: { id: doc.id } });
+  }
+
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 }
