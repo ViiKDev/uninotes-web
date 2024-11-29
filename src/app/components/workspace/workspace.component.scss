@@ -1,265 +1,304 @@
 .workspace {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #f8f9fa;
-  
-    .workspace-header {
-      background: white;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #e9ecef;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  
-      .header-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f9fa;
+
+  .workspace-header {
+    background: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+
+      @media (max-width: 768px) {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      h1 {
+        color: var(--blue-600);
+        font-size: 1.75rem;
+        font-weight: 600;
+      }
+
+      .header-actions {
         display: flex;
-        justify-content: space-between;
+        gap: 1rem;
         align-items: center;
-        max-width: 1400px;
-        margin: 0 auto;
-        width: 100%;
-  
-        h1 {
-          color: var(--blue-600);
-          font-size: 1.75rem;
-          font-weight: 600;
+
+        @media (max-width: 768px) {
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: space-between;
         }
-  
-        .header-actions {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-  
-          .search-bar {
-            position: relative;
-            
-            input {
-              padding: 0.5rem 1rem 0.5rem 2.5rem;
-              border: 1px solid #e9ecef;
-              border-radius: 8px;
-              width: 300px;
-              font-size: 0.9rem;
-              transition: all 0.3s ease;
-  
-              &:focus {
-                outline: none;
-                border-color: var(--blue-400);
-                box-shadow: 0 0 0 3px rgba(78,157,198,0.1);
-              }
-            }
-  
-            i {
-              position: absolute;
-              left: 0.75rem;
-              top: 50%;
-              transform: translateY(-50%);
-              color: #6c757d;
-            }
-          }
-  
-          .create-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--blue-400);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-  
-            &:hover {
-              background: var(--blue-500);
-              transform: translateY(-1px);
-            }
-  
-            i {
-              font-size: 0.9rem;
-            }
-          }
-  
-          .view-toggle {
-            padding: 0.5rem;
-            background: transparent;
+
+        .search-bar {
+          position: relative;
+          
+          input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
             border: 1px solid #e9ecef;
             border-radius: 8px;
-            cursor: pointer;
-            color: #6c757d;
+            width: 300px;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-  
+
+            @media (max-width: 768px) {
+              width: 100%;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: var(--blue-400);
+              box-shadow: 0 0 0 3px rgba(78,157,198,0.1);
+            }
+          }
+
+          i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+          }
+
+          @media (max-width: 768px) {
+            width: 100%;
+            order: 3;
+          }
+        }
+
+        .create-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 1rem;
+          background: var(--blue-400);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-weight: 500;
+
+          &:hover {
+            background: var(--blue-500);
+            transform: translateY(-1px);
+          }
+
+          i {
+            font-size: 0.9rem;
+          }
+        }
+
+        .view-toggle {
+          padding: 0.5rem;
+          background: transparent;
+          border: 1px solid #e9ecef;
+          border-radius: 8px;
+          cursor: pointer;
+          color: #6c757d;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: #f8f9fa;
+            color: var(--blue-400);
+          }
+        }
+      }
+    }
+  }
+
+  .workspace-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: white;
+      border-right: 1px solid #e9ecef;
+      display: flex;
+      flex-direction: column;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .sidebar-header {
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+
+        h2 {
+          color: #495057;
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+      }
+
+      .folders-list {
+        padding: 1rem;
+        overflow-y: auto;
+
+        .folder-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.75rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          color: #495057;
+          margin-bottom: 0.5rem;
+          position: relative;
+
+          &:hover {
+            background: #f8f9fa;
+
+            .delete-btn {
+              opacity: 1;
+            }
+          }
+
+          &.active {
+            background: var(--blue-100);
+            color: var(--blue-600);
+          }
+
+          i {
+            color: var(--blue-400);
+          }
+
+          .delete-btn {
+            position: absolute;
+            right: 0.5rem;
+            opacity: 0;
+            background: transparent;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+
             &:hover {
-              background: #f8f9fa;
-              color: var(--blue-400);
+              background: rgba(220,53,69,0.1);
             }
           }
         }
       }
     }
-  
-    .workspace-content {
-      display: flex;
+
+    .content-area {
       flex: 1;
-      overflow: hidden;
-  
-      .sidebar {
-        width: 250px;
-        background: white;
-        border-right: 1px solid #e9ecef;
-        display: flex;
-        flex-direction: column;
-  
-        .sidebar-header {
-          padding: 1rem;
-          border-bottom: 1px solid #e9ecef;
-  
-          h2 {
-            color: #495057;
-            font-size: 1.1rem;
-            font-weight: 600;
-          }
-        }
-  
-        .folders-list {
-          padding: 1rem;
-          overflow-y: auto;
-  
-          .folder-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #495057;
-            margin-bottom: 0.5rem;
-            position: relative;
-  
-            &:hover {
-              background: #f8f9fa;
-  
-              .delete-btn {
-                opacity: 1;
-              }
-            }
-  
-            &.active {
-              background: var(--blue-100);
-              color: var(--blue-600);
-            }
-  
-            i {
-              color: var(--blue-400);
-            }
-  
-            .delete-btn {
-              position: absolute;
-              right: 0.5rem;
-              opacity: 0;
-              background: transparent;
-              border: none;
-              color: #dc3545;
-              cursor: pointer;
-              padding: 0.25rem;
-              border-radius: 4px;
-              transition: all 0.2s ease;
-  
-              &:hover {
-                background: rgba(220,53,69,0.1);
-              }
-            }
-          }
+      padding: 2rem;
+      overflow-y: auto;
+
+      @media (max-width: 768px) {
+        padding: 1rem;
+      }
+
+      .content-header {
+        margin-bottom: 2rem;
+
+        h2 {
+          color: #495057;
+          font-size: 1.5rem;
+          font-weight: 600;
         }
       }
-  
-      .content-area {
-        flex: 1;
-        padding: 2rem;
-        overflow-y: auto;
-  
-        .content-header {
-          margin-bottom: 2rem;
-  
-          h2 {
-            color: #495057;
-            font-size: 1.5rem;
-            font-weight: 600;
+
+      .documents-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+        
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 1rem;
+        }
+        
+        &.list-view {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .document-card {
+            flex-direction: row;
+            padding: 1rem;
+            
+            i {
+              font-size: 1.25rem;
+            }
           }
         }
-  
-        .documents-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 1.5rem;
-          
-          &.list-view {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-  
-            .document-card {
-              flex-direction: row;
-              padding: 1rem;
-              
-              i {
-                font-size: 1.25rem;
-              }
+
+        .document-card {
+          background: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          position: relative;
+          transition: all 0.3s ease;
+          border: 1px solid #e9ecef;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+            .delete-btn {
+              opacity: 1;
             }
           }
-  
-          .document-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            position: relative;
-            transition: all 0.3s ease;
-            border: 1px solid #e9ecef;
-  
+
+          i {
+            font-size: 2rem;
+            color: var(--blue-400);
+          }
+
+          .doc-name {
+            font-size: 0.9rem;
+            color: #495057;
+            text-align: center;
+            word-break: break-word;
+          }
+
+          .delete-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            opacity: 0;
+            background: transparent;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+
             &:hover {
-              transform: translateY(-2px);
-              box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  
-              .delete-btn {
-                opacity: 1;
-              }
-            }
-  
-            i {
-              font-size: 2rem;
-              color: var(--blue-400);
-            }
-  
-            .doc-name {
-              font-size: 0.9rem;
-              color: #495057;
-              text-align: center;
-              word-break: break-word;
-            }
-  
-            .delete-btn {
-              position: absolute;
-              top: 0.5rem;
-              right: 0.5rem;
-              opacity: 0;
-              background: transparent;
-              border: none;
-              color: #dc3545;
-              cursor: pointer;
-              padding: 0.25rem;
-              border-radius: 4px;
-              transition: all 0.2s ease;
-  
-              &:hover {
-                background: rgba(220,53,69,0.1);
-              }
+              background: rgba(220,53,69,0.1);
             }
           }
         }
       }
     }
   }
+}
