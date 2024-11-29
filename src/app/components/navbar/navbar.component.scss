@@ -2,94 +2,96 @@ nav {
     display: flex;
     width: 100%;
     height: 50px;
-    justify-content: space-between;
     background-color: rgb(250, 250, 250);
     box-shadow: var(--box-shadow);
     position: relative;
-    padding: 5px;
+    padding: 0 30px;
     box-sizing: border-box;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
 }
 
 .nav-section {
-    flex: 1;
     display: flex;
-    justify-content: center;
+    align-items: center;
+}
+
+.nav-section:first-child {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    user-select: none;
+    cursor: pointer;
+}
+
+.logo .blue {
+    color: var(--blue-500);
+}
+
+.buttons-wrapper {
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+    height: 100%;
     align-items: center;
 
-    &:nth-child(1) {
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
-            border-radius: 8px;
-            transition: background .3s;
-            user-select: none;
-            cursor: pointer;
+    button {
+        height: 35px;
+        padding: 0 16px;
+        border-radius: 4px;
+        transition: all 0.3s;
+        cursor: pointer;
+        font-weight: 600; 
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        margin: 0;
+        border: 1px solid var(--blue-400);
+        font-family: 'Inter', sans-serif;
 
-            &:hover {
-                background-color: rgb(230, 230, 230);
-            }
-
-            span.blue {
-                color: var(--blue-500);
-            }
-        }
-    }
-
-    &:nth-child(2) {
-        ul {
-            display: flex;
-            list-style: none;
-            justify-content: space-evenly;
-            height: 100%;
-
-            li {
-                display: flex;
-                align-items: center;
-                font-size: 14px;
-                height: 100%;
-                padding: 15px;
-                box-sizing: border-box;
-                border-radius: 8px;
-                transition: background .3s;
-                user-select: none;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(230, 230, 230);
-                }
-            }
-        }
-    }
-
-    &.buttons-wrapper {
-        gap: 20px;
-
-        button {
-            height: 100%;
-            width: 100px;
+        &:first-child {
             background: transparent;
-            border-radius: 8px;
-            transition: all .3s;
-            cursor: pointer;
-            font-weight: bold;
-
-            &:nth-child(1) {
-                background: var(--blue-400);
-                color: white;
-            }
-
-            &:nth-child(2) {
-                background: rgb(240, 240, 240);
-
-                &:hover {
-                    color: white;
-                }
+            color: var(--blue-400);
+            
+            &:hover {
+                background: rgba(78, 157, 198, 0.1);
             }
         }
+
+        &:last-child {
+            background: var(--blue-400);
+            color: white;
+            
+            &:hover {
+                background: var(--blue-500);
+            }
+        }
+    }
+}
+
+.buttons-wrapper .workspace-btn {
+    background: var(--blue-400);
+    color: white;
+
+    &:hover {
+        background: var(--blue-500);
+    }
+}
+
+.buttons-wrapper .logout-btn {
+    background: #f56565;
+    color: white;
+    margin-right: 15px;
+
+    &:hover {
+        background: #e53e3e;
     }
 }

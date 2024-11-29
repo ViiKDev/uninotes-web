@@ -1,32 +1,25 @@
-<ng-container *ngIf="!loggedInNavbar">
-    <nav>
-        <div class="nav-section">
-            <div class="logo" routerLink="home">
-                <span>Uni<span class="blue">Note</span></span>
-            </div>
-        </div>
-        <!-- <div class="nav-section">
-            <ul>
-                <li routerLink="/home">Inicio</li>
-                <li routerLink="/home">Sobre</li>
-                <li routerLink="/home">Contato</li>
-            </ul>
-        </div> -->
-        <div class="nav-section buttons-wrapper">
-            <button class="fill-anim" routerLink="/login"><span>Entrar</span></button>
-            <button class="fill-anim" routerLink="/register"><span>Registrar</span></button>
-        </div>
-    </nav>
-</ng-container>
-<ng-container *ngIf="loggedInNavbar">
-    <nav>
-        <div class="nav-section">
-            <div class="logo" routerLink="home">
-                <span>Uni<span class="blue">Notes</span></span>
-            </div>
-        </div>
-        <div class="nav-section buttons-wrapper">
-            <button class="fill-anim" (click)="onClickSair()"><span>Sair</span></button>
-        </div>
-    </nav>
-</ng-container>
+<nav>
+    <div class="nav-section">
+      <div class="logo" routerLink="home">
+        Uni<span class="blue">Note</span>
+      </div>
+    </div>
+  
+    <div class="buttons-wrapper">
+      <ng-container *ngIf="!loggedInNavbar">
+        <button class="login-btn" routerLink="/login">Entrar</button>
+        <button class="register-btn" routerLink="/register">Registrar</button>
+      </ng-container>
+      
+      <ng-container *ngIf="loggedInNavbar">
+        <button class="workspace-btn" routerLink="/workspace" routerLinkActive="active">
+          <i class="fas fa-folder"></i>
+          Workspace
+        </button>
+        <button class="logout-btn" (click)="onClickSair()">
+          <i class="fas fa-sign-out-alt"></i>
+          Sair
+        </button>
+      </ng-container>
+    </div>
+  </nav>
