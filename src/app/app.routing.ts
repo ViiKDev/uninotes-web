@@ -14,6 +14,7 @@ const APP_ROUTES: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'workspace', component: WorkspaceComponent, canActivate: [AuthGuard] },
     { path: 'document-editor', component: DocumentEditorComponent, canActivate: [AuthGuard] },
+    { path: '**', redirectTo: 'home' } 
 ];
 
 export const routing: ModuleWithProviders<any> = RouterModule.forRoot(APP_ROUTES);
